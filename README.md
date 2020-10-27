@@ -24,9 +24,9 @@ var nextMove = NextMove.Solve(heaps);
 Unit tests for the Nim solver.
 
 #### Nim.Web
-A .NET Core 3.1 web application.
+A .NET Core 3.1 web application. User experience is written in TypeScript.
 
-The solver is hosted as RESTful API endpoint.
+The solver is hosted as RESTful API endpoint. The computer player's AI and the hint system both use the endpoint.
 ```
 POST https://nim.azurewebsites.net/api/nextmove [3,5,7]
 ```
