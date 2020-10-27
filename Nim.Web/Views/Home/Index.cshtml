@@ -40,13 +40,32 @@
     </div>
     <div class="form-row">
         <div class="form-group col-md-2">
-            <input id="btnPlay" type="button" class="btn btn-primary" value="Play!" style="width: 100%;" />
+            <input type="button" class="btn-play btn btn-primary" value="Click to Play" style="width: 100%;" />
+        </div>
+        <div class="form-group col-md-2">
+            <input type="button" class="btn-hint btn btn-light" value="Get a Hint" style="width: 100%; display: none;" />
+        </div>
+        <div class="form-group col-md-8">
+            <input type="text" class="hint form-control-plaintext" />
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-12">
-            <textarea class="form-control" rows="12"></textarea>
+            <textarea class="form-control" rows="8"></textarea>
         </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Game Rules</h5>
+        <p>Players take turns removing any number of remaining objects from a single heap. The player that takes the last object from the last heap loses.</p>
+        <h5 class="card-title">How to Play</h5>
+        <ol>
+            <li>Enter the desired heap sizes between 1 and 12, then click <strong>Click to Play</strong>.</li>
+            <li>Click a button to remove that many objects from its heap.</li>
+        </ol>
+        <a href="https://en.wikipedia.org/wiki/Nim" class="card-link" target="_blank">Wikipedia</a>
     </div>
 </div>
 

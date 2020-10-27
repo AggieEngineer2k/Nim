@@ -24,52 +24,35 @@ namespace Nim.Solver
                 throw new ArgumentNullException(nameof(heaps));
             }
 
+            var isEndgameNear = heaps.Count(x => x > 1) <= 1;
+
+            if (isEndgameNear)
+            {
+                var isOdd = (heaps.Count(x => x > 0) % 2) == 1;
+                var maxHeapSize = heaps.Max();
+                var indexOfMaxHeapSize = heaps.ToList().FindIndex(x => x == maxHeapSize);
+                if (maxHeapSize == 1 && isOdd)
+                {
+                    return null;
+                }
+
+                return (indexOfMaxHeapSize, maxHeapSize - (isOdd ? 1 : 0));
+            }
+
             var nimSum = NimSum(heaps);
 
-            // Return winning moves for known winning positions.
-            if (heaps.Length == 1 && heaps[0] > 1)
-            {
-                return (0, heaps[0] - 1);
-            }
-            else if (heaps.All(x => x == 1) && heaps.Length % 2 == 0)
-            {
-                return (0, 1);
-            }
-            else if (heaps.Length == 2 && heaps.Where(x => x == 1).Count() == 1)
-            {
-                for (var i = 0; i < heaps.Length; i++)
-                {
-                    if (heaps[i] > 1)
-                    {
-                        return (i, heaps[i]);
-                    }
-                }
-            }
-
-            // Return null on a losing position.
             if (nimSum == 0)
             {
                 return null;
             }
-            else if (heaps.All(x => x == 1) && heaps.Length % 2 == 1)
-            {
-                return null;
-            }
 
-            // Determine a winning move by removing the Nim sum from a heap.
             for (var i = 0; i < heaps.Length; i++)
             {
-                var remove = Convert.ToInt32(nimSum);
-                if (heaps[i] < remove)
+                var heapSize = heaps[i];
+                var targetSize = Convert.ToInt32(heapSize ^ nimSum);
+                if (targetSize < heapSize)
                 {
-                    continue;
-                }
-
-                var modified = (int[])heaps.Clone();
-                modified[i] -= remove;
-                if (NimSum(modified) == 0)
-                {
-                    return (i, remove);
+                    return (i, heapSize - targetSize);
                 }
             }
 

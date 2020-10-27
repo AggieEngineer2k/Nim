@@ -47,7 +47,7 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 2 };
-            var expected = (0, 1);
+            var expected = (heap: 0, number: 1);
 
             // Act
             var actual = NextMove.Solve(heaps);
@@ -64,7 +64,7 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 1, 1 };
-            var expected = (0, 1);
+            var expected = (heap: 0, number: 1);
 
             // Act
             var actual = NextMove.Solve(heaps);
@@ -81,7 +81,7 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 1, 2 };
-            var expected = (1, 2);
+            var expected = (heap: 1, number: 2);
 
             // Act
             var actual = NextMove.Solve(heaps);
@@ -110,11 +110,11 @@ namespace Nim.Solver.Tests
         /// [1,1,2] returns a move.
         /// </summary>
         [TestMethod]
-        public void AssertThatTwoHeapsWithOneObjectAndAThirdWithMoreReturnsAllObjectsFromTheThird()
+        public void AssertThatTwoHeapsWithOneObjectAndAThirdWithMoreReturnsAllButOneObjectsFromTheThird()
         {
             // Arrange
             var heaps = new[] { 1, 1, 2 };
-            var expected = (2, 2);
+            var expected = (heap: 2, number: 1);
 
             // Act
             var actual = NextMove.Solve(heaps);
@@ -131,7 +131,7 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 3, 4, 5 };
-            var expected = (0, 2);
+            var expected = (heap: 0, number: 2);
 
             // Act
             var actual = NextMove.Solve(heaps);
