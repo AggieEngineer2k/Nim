@@ -27,6 +27,15 @@ Unit tests for the Nim solver.
 A .NET Core 3.1 web application. User experience is written in TypeScript.
 
 The solver is hosted as RESTful API endpoint. The computer player's AI and the hint system both use the endpoint.
+
+Here is an example of a winning position.
 ```
-POST https://nim.azurewebsites.net/api/nextmove [3,5,7]
+ Request: POST https://nim.azurewebsites.net/api/nextmove [3,5,7]
+Response: {heap: 0, number: 1}
+```
+
+Here is an example of a losing position.
+```
+ Request: POST https://nim.azurewebsites.net/api/nextmove [1,1,1]
+Response: {}
 ```
