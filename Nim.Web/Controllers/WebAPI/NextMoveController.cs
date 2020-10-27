@@ -4,7 +4,9 @@
 
 namespace Nim.Web.Controllers.WebAPI
 {
+    using System;
     using Microsoft.AspNetCore.Mvc;
+    using Nim.Web.Models.WebAPI.NextMove;
 
     /// <summary>
     /// The next move controller.
@@ -16,24 +18,17 @@ namespace Nim.Web.Controllers.WebAPI
         /// <summary>
         /// The POST action.
         /// </summary>
-        /// <param name="heaps">The heap sizes.</param>
+        /// <param name="model">The POST model.</param>
         /// <returns>An ActionResult.</returns>
         [HttpPost]
-        public ActionResult Post([FromBody]int[] heaps)
+        public ActionResult Post([FromBody]NextMovePostModel model)
         {
-            var nextMove = Nim.Solver.NextMove.Solve(heaps);
-            if (nextMove.HasValue)
+            if (model == null)
             {
-                return this.Ok(new
-                {
-                    nextMove.Value.heap,
-                    nextMove.Value.number,
-                });
+                throw new ArgumentNullException(nameof(model));
             }
-            else
-            {
-                return this.Ok(new { });
-            }
+
+            return this.Ok(Nim.Solver.NextMove.Solve(model.Heaps));
         }
     }
 }

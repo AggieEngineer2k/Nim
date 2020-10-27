@@ -107,7 +107,7 @@
 
             // No move is returned for a losing position.
             // In that case, choose a random heap from those with at least one object left and choose a random number to remove.
-            if (Object.keys(nextMove).length === 0) {
+            if (!nextMove) {
                 let heaps = [];
                 $.each(this.form.find('.heap-size'), (indexInArray, value) => {
                     heaps.push(Number($(value).val()));
@@ -136,7 +136,7 @@
             var nextMove = await this.getNextMove();
             let hint = this.form.find('.hint');
 
-            if (Object.keys(nextMove).length === 0) {
+            if (!nextMove) {
                 hint.val('Sorry, I can\'t help you.');
             }
             else {
@@ -153,17 +153,17 @@
                 $.each(this.form.find('.heap-size'), (indexInArray, value) => {
                     heaps.push(Number($(value).val()));
                 });
-                let data = JSON.stringify(heaps);
+                let data = JSON.stringify({ heaps: heaps });
                 let result = await $.ajax({
                     url: '/api/nextmove',
                     method: 'POST',
                     contentType: 'application/json',
                     data: data
                 });
+                console.log(result);
                 return result;
             }
             catch (error) {
-                console.log(error);
                 this.log('There was an error.');
             }
         };

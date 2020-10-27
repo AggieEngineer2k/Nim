@@ -5,6 +5,7 @@
 namespace Nim.Solver.Tests
 {
     using System;
+    using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -36,7 +37,7 @@ namespace Nim.Solver.Tests
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.IsNull(actual);
+            actual.Should().BeNull();
         }
 
         /// <summary>
@@ -47,13 +48,13 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 2 };
-            var expected = (heap: 0, number: 1);
+            var expected = new Move(heap: 0, number: 1);
 
             // Act
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         /// <summary>
@@ -64,13 +65,13 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 1, 1 };
-            var expected = (heap: 0, number: 1);
+            var expected = new Move(heap: 0, number: 1);
 
             // Act
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         /// <summary>
@@ -81,13 +82,13 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 1, 2 };
-            var expected = (heap: 1, number: 2);
+            var expected = new Move(heap: 1, number: 2);
 
             // Act
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace Nim.Solver.Tests
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.IsNull(actual);
+            actual.Should().BeNull();
         }
 
         /// <summary>
@@ -114,13 +115,13 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 1, 1, 2 };
-            var expected = (heap: 2, number: 1);
+            var expected = new Move(heap: 2, number: 1);
 
             // Act
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         /// <summary>
@@ -131,13 +132,13 @@ namespace Nim.Solver.Tests
         {
             // Arrange
             var heaps = new[] { 3, 4, 5 };
-            var expected = (heap: 0, number: 2);
+            var expected = new Move(heap: 0, number: 2);
 
             // Act
             var actual = NextMove.Solve(heaps);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

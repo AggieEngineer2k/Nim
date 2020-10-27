@@ -5,6 +5,7 @@
 namespace Nim.Solver
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -17,7 +18,7 @@ namespace Nim.Solver
         /// </summary>
         /// <param name="heaps">The remaining heaps.</param>
         /// <returns>The number to take from a heap.</returns>
-        public static (int heap, int number)? Solve(int[] heaps)
+        public static Move Solve(ICollection<int> heaps)
         {
             if (heaps == null)
             {
@@ -36,7 +37,7 @@ namespace Nim.Solver
                     return null;
                 }
 
-                return (indexOfMaxHeapSize, maxHeapSize - (isOdd ? 1 : 0));
+                return new Move(indexOfMaxHeapSize, maxHeapSize - (isOdd ? 1 : 0));
             }
 
             var nimSum = NimSum(heaps);
@@ -46,13 +47,13 @@ namespace Nim.Solver
                 return null;
             }
 
-            for (var i = 0; i < heaps.Length; i++)
+            for (var i = 0; i < heaps.Count; i++)
             {
-                var heapSize = heaps[i];
+                var heapSize = heaps.ElementAt(i);
                 var targetSize = Convert.ToInt32(heapSize ^ nimSum);
                 if (targetSize < heapSize)
                 {
-                    return (i, heapSize - targetSize);
+                    return new Move(i, heapSize - targetSize);
                 }
             }
 
@@ -65,13 +66,13 @@ namespace Nim.Solver
         /// </summary>
         /// <param name="heaps">The number of objects in each heap.</param>
         /// <returns>The Nim sum.</returns>
-        private static uint NimSum(int[] heaps)
+        private static uint NimSum(ICollection<int> heaps)
         {
             uint nimSum = 0;
 
-            for (var i = 0; i < heaps.Length; i++)
+            for (var i = 0; i < heaps.Count; i++)
             {
-                nimSum ^= Convert.ToUInt32(heaps[i]);
+                nimSum ^= Convert.ToUInt32(heaps.ElementAt(i));
             }
 
             return nimSum;

@@ -5,12 +5,12 @@ This project is an example of a .NET Core web application published to Azure.
 
 ### Composition
 #### Nim.Solver
-This class library provides a method for solving a game board for the next move, which will be a tuple containing the zero-based heap index and the number of objects to remove from it.
+This class library provides a method for solving a game board for the next move, which will contain the zero-based heap index and the number of objects to remove from it.
 ``` c#
 // A winning position.
 var heaps = new[] {3, 5, 7};
 var nextMove = NextMove.Solve(heaps);
-// Returns: (heap: 0, number: 1)
+// Returns: Heap = 0, Number = 1
 ```
 If no move is found, `null` will be returned.
 ``` c#
@@ -30,12 +30,12 @@ The solver is hosted as RESTful API endpoint. The computer player's AI and the h
 
 Here is an example of a winning position.
 ```
- Request: POST https://nim.azurewebsites.net/api/nextmove [3,5,7]
-Response: {heap: 0, number: 1}
+ Request: POST https://nim.azurewebsites.net/api/nextmove {heaps: [3,5,7]}
+Response: HTTP 200 {heap: 0, number: 1}
 ```
 
 Here is an example of a losing position.
 ```
- Request: POST https://nim.azurewebsites.net/api/nextmove [1,1,1]
-Response: {}
+ Request: POST https://nim.azurewebsites.net/api/nextmove {heaps: [1,1,1]}
+Response: HTTP 204
 ```
