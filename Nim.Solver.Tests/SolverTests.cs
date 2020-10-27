@@ -91,6 +91,39 @@ namespace Nim.Solver.Tests
         }
 
         /// <summary>
+        /// [1,1,1] returns no move.
+        /// </summary>
+        [TestMethod]
+        public void AssertThatThreeHeapsWithOneObjectReturnsNoMove()
+        {
+            // Arrange
+            var heaps = new[] { 1, 1, 1 };
+
+            // Act
+            var actual = NextMove.Solve(heaps);
+
+            // Assert
+            Assert.IsNull(actual);
+        }
+
+        /// <summary>
+        /// [1,1,2] returns a move.
+        /// </summary>
+        [TestMethod]
+        public void AssertThatTwoHeapsWithOneObjectAndAThirdWithMoreReturnsAllObjectsFromTheThird()
+        {
+            // Arrange
+            var heaps = new[] { 1, 1, 2 };
+            var expected = (2, 2);
+
+            // Act
+            var actual = NextMove.Solve(heaps);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
         /// [3,4,5] returns a move.
         /// </summary>
         [TestMethod]

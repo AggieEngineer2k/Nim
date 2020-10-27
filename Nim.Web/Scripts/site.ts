@@ -55,11 +55,11 @@
             $.each(this.form.find('.heap-row'), (indexInArray, value) => {
                 var heapRow = $(value);
                 heapRow.find('.heap-buttons').empty();
-                for (var i = 0; i < heapRow.find('.heap-size').val(); i++) {
+                for (var i = Number(heapRow.find('.heap-size').val()); i > 0; i--) {
                     heapRow.find('.heap-buttons').append(
                         $('<input type="button" class="btn btn-primary heap-remove">')
-                            .prop('value', i + 1)
-                            .attr('data-remove', i + 1)
+                            .prop('value', i)
+                            .attr('data-remove', i)
                     );
                 }
                 heapRow.find('.heap-form-group').show();
