@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="form">
+    <div class="form-row heap-row" data-heap-number="0">
+        <div class="form-group col-md-2">
+            <label>Heap 1</label>
+            <input type="number" class="form-control heap-size" min="1" max="12" value="3" />
+        </div>
+        <div class="form-group col-md-10 heap-form-group" style="display: none;">
+            <label>Remove</label>
+            <div class="btn-group heap-buttons d-block"></div>
+        </div>
+    </div>
+    <div class="form-row heap-row" data-heap-number="1">
+        <div class="form-group col-md-2">
+            <label>Heap 2</label>
+            <input type="number" class="form-control heap-size" min="1" max="12" value="5" />
+        </div>
+        <div class="form-group col-md-10 heap-form-group" style="display: none;">
+            <label>Remove</label>
+            <div class="btn-group heap-buttons d-block"></div>
+        </div>
+    </div>
+    <div class="form-row heap-row" data-heap-number="2">
+        <div class="form-group col-md-2">
+            <label>Heap 3</label>
+            <input type="number" class="form-control heap-size" min="1" max="12" value="7" />
+        </div>
+        <div class="form-group col-md-10 heap-form-group" style="display: none;">
+            <label>Remove</label>
+            <div class="btn-group heap-buttons d-block"></div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <input id="btnPlay" type="button" class="btn btn-primary" value="Play!" style="width: 100%;" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <textarea class="form-control" rows="12"></textarea>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            new Nim.Web.Home.Index({
+                form: $('.form')
+            });
+        });
+    </script>
+}
