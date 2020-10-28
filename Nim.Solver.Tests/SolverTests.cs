@@ -25,13 +25,40 @@ namespace Nim.Solver.Tests
         }
 
         /// <summary>
-        /// [1] returns no move.
+        /// Assert that the solver returns no next moves for losing positions.
         /// </summary>
-        [TestMethod]
-        public void AssertThatOneHeapWithOneObjectReturnsNull()
+        /// <param name="heaps">The heap sizes.</param>
+        [DataRow(new[] { 0, 0, 1 }, DisplayName = "Losing { 0, 0, 1 }")]
+        [DataRow(new[] { 0, 2, 2 }, DisplayName = "Losing { 0, 2, 2 }")]
+        [DataRow(new[] { 1, 1, 1 }, DisplayName = "Losing { 1, 1, 1 }")]
+        [DataRow(new[] { 1, 2, 3 }, DisplayName = "Losing { 1, 2, 3 }")]
+        [DataRow(new[] { 1, 4, 5 }, DisplayName = "Losing { 1, 4, 5 }")]
+        [DataRow(new[] { 1, 6, 7 }, DisplayName = "Losing { 1, 6, 7 }")]
+        [DataRow(new[] { 1, 8, 9 }, DisplayName = "Losing { 1, 8, 9 }")]
+        [DataRow(new[] { 2, 4, 6 }, DisplayName = "Losing { 2, 4, 6 }")]
+        [DataRow(new[] { 2, 5, 7 }, DisplayName = "Losing { 2, 5, 7 }")]
+        [DataRow(new[] { 3, 4, 7 }, DisplayName = "Losing { 3, 4, 7 }")]
+        [DataRow(new[] { 3, 5, 6 }, DisplayName = "Losing { 3, 5, 6 }")]
+        [DataRow(new[] { 4, 8, 12 }, DisplayName = "Losing { 4, 8, 12 }")]
+        [DataRow(new[] { 4, 9, 13 }, DisplayName = "Losing { 4, 9, 13 }")]
+        [DataRow(new[] { 5, 8, 13 }, DisplayName = "Losing { 5, 8, 13 }")]
+        [DataRow(new[] { 5, 9, 12 }, DisplayName = "Losing { 5, 9, 12 }")]
+        [DataRow(new[] { 1, 1, 2, 2 }, DisplayName = "Losing { 1, 1, 2, 2 }")]
+        [DataRow(new[] { 1, 2, 4, 7 }, DisplayName = "Losing { 1, 2, 4, 7 }")]
+        [DataRow(new[] { 1, 2, 5, 6 }, DisplayName = "Losing { 1, 2, 5, 6 }")]
+        [DataRow(new[] { 1, 3, 4, 6 }, DisplayName = "Losing { 1, 3, 4, 6 }")]
+        [DataRow(new[] { 1, 3, 5, 7 }, DisplayName = "Losing { 1, 3, 5, 7 }")]
+        [DataRow(new[] { 2, 2, 2, 2 }, DisplayName = "Losing { 2, 2, 2, 2 }")]
+        [DataRow(new[] { 2, 2, 3, 3 }, DisplayName = "Losing { 2, 2, 3, 3 }")]
+        [DataRow(new[] { 2, 3, 4, 5 }, DisplayName = "Losing { 2, 3, 4, 5 }")]
+        [DataRow(new[] { 2, 3, 6, 7 }, DisplayName = "Losing { 2, 3, 6, 7 }")]
+        [DataRow(new[] { 2, 3, 8, 9 }, DisplayName = "Losing { 2, 3, 8, 9 }")]
+        [DataRow(new[] { 4, 5, 6, 7 }, DisplayName = "Losing { 4, 5, 6, 7 }")]
+        [DataRow(new[] { 4, 5, 8, 9 }, DisplayName = "Losing { 4, 5, 8, 9 }")]
+        [DataTestMethod]
+        public void AssertThatSolverReturnsNoMove(int[] heaps)
         {
             // Arrange
-            var heaps = new[] { 1 };
 
             // Act
             var actual = NextMove.Solve(heaps);
@@ -41,98 +68,27 @@ namespace Nim.Solver.Tests
         }
 
         /// <summary>
-        /// [2] returns a move.
+        /// Assert that the solver returns the expected next moves for winning positions.
         /// </summary>
-        [TestMethod]
-        public void AssertThatOneHeapWithMoreThanOneObjectReturnsOneLess()
+        /// <param name="heaps">The heap sizes.</param>
+        /// <param name="heap">The next move's heap.</param>
+        /// <param name="number">The next move's number.</param>
+        [DataRow(new[] { 0, 1, 1 }, 1, 1, DisplayName = "Winning { 0, 1, 1 }")]
+        [DataRow(new[] { 0, 0, 2 }, 2, 1, DisplayName = "Winning { 0, 0, 2 }")]
+        [DataRow(new[] { 0, 1, 2 }, 2, 2, DisplayName = "Winning { 0, 1, 2 }")]
+        [DataRow(new[] { 1, 1, 2 }, 2, 1, DisplayName = "Winning { 1, 1, 2 }")]
+        [DataRow(new[] { 1, 2, 2 }, 0, 1, DisplayName = "Winning { 1, 2, 2 }")]
+        [DataRow(new[] { 2, 2, 2 }, 0, 2, DisplayName = "Winning { 2, 2, 2 }")]
+        [DataRow(new[] { 3, 4, 5 }, 0, 2, DisplayName = "Winning { 3, 4, 5 }")]
+        [DataRow(new[] { 3, 5, 7 }, 0, 1, DisplayName = "Winning { 3, 5, 7 }")]
+        [DataRow(new[] { 1, 1, 1, 1 }, 0, 1, DisplayName = "Winning { 1, 1, 1, 1 }")]
+        [DataRow(new[] { 1, 1, 1, 2 }, 3, 2, DisplayName = "Winning { 1, 1, 1, 2 }")]
+        [DataRow(new[] { 1, 2, 2, 2 }, 1, 1, DisplayName = "Winning { 1, 2, 2, 2 }")]
+        [DataTestMethod]
+        public void AssertThatSolverReturnsWinningMove(int[] heaps, int heap, int number)
         {
             // Arrange
-            var heaps = new[] { 2 };
-            var expected = new Move(heap: 0, number: 1);
-
-            // Act
-            var actual = NextMove.Solve(heaps);
-
-            // Assert
-            actual.Should().BeEquivalentTo(expected);
-        }
-
-        /// <summary>
-        /// [1,1] returns a move.
-        /// </summary>
-        [TestMethod]
-        public void AssertThatTwoHeapsWithOneObjectEachReturnsOneFromOne()
-        {
-            // Arrange
-            var heaps = new[] { 1, 1 };
-            var expected = new Move(heap: 0, number: 1);
-
-            // Act
-            var actual = NextMove.Solve(heaps);
-
-            // Assert
-            actual.Should().BeEquivalentTo(expected);
-        }
-
-        /// <summary>
-        /// [1,2] returns a move.
-        /// </summary>
-        [TestMethod]
-        public void AssertThatTwoHeapsWithOneObjectAndMoreThanOneObjectReturnsAllObjectsFromTheSecondHeap()
-        {
-            // Arrange
-            var heaps = new[] { 1, 2 };
-            var expected = new Move(heap: 1, number: 2);
-
-            // Act
-            var actual = NextMove.Solve(heaps);
-
-            // Assert
-            actual.Should().BeEquivalentTo(expected);
-        }
-
-        /// <summary>
-        /// [1,1,1] returns no move.
-        /// </summary>
-        [TestMethod]
-        public void AssertThatThreeHeapsWithOneObjectReturnsNoMove()
-        {
-            // Arrange
-            var heaps = new[] { 1, 1, 1 };
-
-            // Act
-            var actual = NextMove.Solve(heaps);
-
-            // Assert
-            actual.Should().BeNull();
-        }
-
-        /// <summary>
-        /// [1,1,2] returns a move.
-        /// </summary>
-        [TestMethod]
-        public void AssertThatTwoHeapsWithOneObjectAndAThirdWithMoreReturnsAllButOneObjectsFromTheThird()
-        {
-            // Arrange
-            var heaps = new[] { 1, 1, 2 };
-            var expected = new Move(heap: 2, number: 1);
-
-            // Act
-            var actual = NextMove.Solve(heaps);
-
-            // Assert
-            actual.Should().BeEquivalentTo(expected);
-        }
-
-        /// <summary>
-        /// [3,4,5] returns a move.
-        /// </summary>
-        [TestMethod]
-        public void AssertThatSolverReturnsWinningMove()
-        {
-            // Arrange
-            var heaps = new[] { 3, 4, 5 };
-            var expected = new Move(heap: 0, number: 2);
+            var expected = new Move(heap: heap, number: number);
 
             // Act
             var actual = NextMove.Solve(heaps);
