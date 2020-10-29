@@ -1,7 +1,8 @@
 # NIM
 
 ### Summary
-This project is an example of a .NET Core web application published to Azure.
+This project is an example of a .NET Core web application hosted in Azure.  
+https://nim.azurewebsites.net
 
 ### Composition
 #### Nim.Solver
