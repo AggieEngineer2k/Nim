@@ -1,0 +1,119 @@
+﻿@page "/playnim"
+@using Nim.Blazor.Data
+@using Nim.Solver
+@using System.Text
+
+<h1>Nim</h1>
+
+<div>
+    Heap 1
+    @heaps[0]
+    <Heap Name="1" @bind-Size="heaps[0]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
+</div>
+<div>
+    Heap 2
+    @heaps[1]
+    <Heap Name="2" @bind-Size="heaps[1]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
+</div>
+<div>
+    Heap 3
+    @heaps[2]
+    <Heap Name="3" @bind-Size="heaps[2]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
+</div>
+<div>
+    <button @onclick="buttonClick">@buttonText</button>
+    @hint
+</div>
+<div>
+    @((MarkupString)logText.Replace(Environment.NewLine, "<br/>").ToString())
+</div>
+
+@code {
+    /// <summary>
+    /// Heap sizes.
+    /// </summary>
+    private int[] heaps { get; } = new int[3];
+
+    /// <summary>
+    /// The current game state.
+    /// </summary>
+    private NimState gameState { get; set; }
+
+    /// <summary>
+    /// Gets or sets the hint.
+    /// </summary>
+    private string hint { get; set; }
+
+    private StringBuilder logText { get; set; } = new StringBuilder();
+
+    /// <summary>
+    /// Gets the button text.
+    /// </summary>
+    private string buttonText => gameState switch
+    {
+        NimState.Setup => "Play",
+        NimState.InProgress => "Get Hint",
+        NimState.Done => "Start Over",
+        _ => "ERROR"
+    };
+
+    protected override void OnInitialized()
+    {
+        setupGame();
+    }
+
+    /// <summary>
+    /// Handles the button click event.
+    /// </summary>
+    /// <param name="e"></param>
+    private void buttonClick(MouseEventArgs e)
+    {
+        switch (gameState)
+        {
+            case NimState.Setup:
+                startGame();
+                break;
+            case NimState.InProgress:
+                var move = Nim.Solver.NextMove.Solve(heaps: heaps);
+                hint = move switch
+                {
+                    not null => $"Try removing {move.Number} from heap {move.Heap + 1}.",
+                    _ => "I can't help you, sorry.",
+                };
+                break;
+            case NimState.Done:
+                setupGame();
+                break;
+        };
+    }
+
+    private void setupGame()
+    {
+        gameState = NimState.Setup;
+
+        // Initialize the heap sizes.
+        heaps[0] = 3;
+        heaps[1] = 5;
+        heaps[2] = 7;
+    }
+
+    private void startGame()
+    {
+        gameState = NimState.InProgress;
+
+        hint = string.Empty;
+
+        logText.Clear();
+        log("Game starting.");
+    }
+
+    private void log(string message)
+    {
+        logText.AppendLine(message);
+    }
+
+    private void playerMoved(Move move)
+    {
+        log($"Player removed {move.Number} from heap {move.Heap}.");
+    }
+}

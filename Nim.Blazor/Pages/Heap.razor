@@ -1,0 +1,63 @@
+﻿@using Nim.Blazor.Data
+@using Nim.Solver
+
+<input type="number" value="@Size" @oninput="OnSizeChanged" disabled="@disabled" min="1" max="12" />
+
+@for (var number = Size; number > 0; number--)
+{
+    var numberValue = @number;
+    <button hidden="@hidden" @onclick="(e) => click(e, numberValue)">@number</button>
+}
+
+@code {
+    [Parameter]
+    public int Size { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SizeChanged { get; set; }
+
+    [Parameter]
+    public int Name { get; set; }
+
+    [Parameter]
+    public EventCallback<Move> OnPlayerMoved { get; set; }
+
+    [Parameter]
+    public NimState state { get; set; }
+
+    /// <summary>
+    /// Gets a value that indicates whether the heap size inputs are disabled.
+    /// </summary>
+    private bool disabled => state switch
+    {
+        NimState.InProgress => true,
+        _ => false
+    };
+
+    /// <summary>
+    /// Gets a value that indicates whether the buttons are hidden.
+    /// </summary>
+    private bool hidden => state switch
+    {
+        NimState.InProgress => false,
+        _ => true
+    };
+
+    private async Task OnSizeChanged(ChangeEventArgs e)
+    {
+        Size = Int32.Parse(e.Value.ToString());
+        await SizeChanged.InvokeAsync(Size);
+    }
+
+    /// <summary>
+    /// Handles the button click event.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <param name="number">The number of items to remove from the heap.</param>
+    private async Task click(MouseEventArgs e, int number)
+    {
+        Size -= number;
+        await SizeChanged.InvokeAsync(Size);
+        await OnPlayerMoved.InvokeAsync(new Move(heap: Name, number: number));
+    }
+}
