@@ -16,8 +16,8 @@
         InProgress = 1,
 
         /// <summary>
-        /// The game is finished.
+        /// The game is over.
         /// </summary>
-        Done = 2
+        GameOver = 2
     }
 }

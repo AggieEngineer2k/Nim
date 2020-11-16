@@ -53,7 +53,7 @@
     {
         NimState.Setup => "Play",
         NimState.InProgress => "Get Hint",
-        NimState.Done => "Start Over",
+        NimState.GameOver => "Start Over",
         _ => "ERROR"
     };
 
@@ -81,7 +81,7 @@
                     _ => "I can't help you, sorry.",
                 };
                 break;
-            case NimState.Done:
+            case NimState.GameOver:
                 setupGame();
                 break;
         };
@@ -90,6 +90,8 @@
     private void setupGame()
     {
         gameState = NimState.Setup;
+
+        logText.Clear();
 
         // Initialize the heap sizes.
         heaps[0] = 3;
@@ -103,7 +105,6 @@
 
         hint = string.Empty;
 
-        logText.Clear();
         log("Game starting.");
     }
 
@@ -114,8 +115,18 @@
 
     private async Task playerMoved(Move move)
     {
+        hint = string.Empty;
         log($"Player removed {move.Number} from heap {move.Heap}.");
-        await ComputerMove();
+
+        if (GetHeapsInPlay().Count() == 0)
+        {
+            log($"Computer wins.");
+            gameState = NimState.GameOver;
+        }
+        else
+        {
+            await ComputerMove();
+        }
     }
 
     private async Task ComputerMove()
@@ -125,15 +136,26 @@
         if (move is null)
         {
             var random = new Random();
-            var heapsInPlay = heaps
-                .Select((size, number) => new { size, number })
-                .Where(x => x.size > 0)
-                .ToList();
-            var randomHeap = heapsInPlay.ElementAt(random.Next(heapsInPlay.Count));
-            var randomNumber = random.Next(randomHeap.size) + 1;
-            move = new Move(randomHeap.number, randomNumber);
+            var heapsInPlay = GetHeapsInPlay();
+            var randomHeap = heapsInPlay.ElementAt(random.Next(heapsInPlay.Count()));
+            var randomNumber = random.Next(heaps[randomHeap]) + 1;
+            move = new Move(randomHeap, randomNumber);
         }
         heaps[move.Heap] -= move.Number;
         log($"Computer removed {move.Number} from heap {move.Heap}.");
+
+        if(GetHeapsInPlay().Count() == 0)
+        {
+            log($"Player wins.");
+            gameState = NimState.GameOver;
+        }
+    }
+
+    private IEnumerable<int> GetHeapsInPlay()
+    {
+        return heaps
+            .Select((size, number) => new { size, number })
+            .Where(x => x.size > 0)
+            .Select(x => x.number);
     }
 }
