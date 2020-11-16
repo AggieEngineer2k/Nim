@@ -21,7 +21,7 @@
     <Heap Name="3" @bind-Size="heaps[2]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
 </div>
 <div>
-    <button @onclick="buttonClick">@buttonText</button>
+    <button @onclick="OnButtonClick">@buttonText</button>
     @hint
 </div>
 <div>
@@ -66,7 +66,7 @@
     /// Handles the button click event.
     /// </summary>
     /// <param name="e"></param>
-    private void buttonClick(MouseEventArgs e)
+    private void OnButtonClick(MouseEventArgs e)
     {
         switch (gameState)
         {
@@ -112,8 +112,28 @@
         logText.AppendLine(message);
     }
 
-    private void playerMoved(Move move)
+    private async Task playerMoved(Move move)
     {
         log($"Player removed {move.Number} from heap {move.Heap}.");
+        await ComputerMove();
+    }
+
+    private async Task ComputerMove()
+    {
+        await Task.Delay(1000);
+        var move = Nim.Solver.NextMove.Solve(heaps: heaps);
+        if (move is null)
+        {
+            var random = new Random();
+            var heapsInPlay = heaps
+                .Select((size, number) => new { size, number })
+                .Where(x => x.size > 0)
+                .ToList();
+            var randomHeap = heapsInPlay.ElementAt(random.Next(heapsInPlay.Count));
+            var randomNumber = random.Next(randomHeap.size) + 1;
+            move = new Move(randomHeap.number, randomNumber);
+        }
+        heaps[move.Heap] -= move.Number;
+        log($"Computer removed {move.Number} from heap {move.Heap}.");
     }
 }
