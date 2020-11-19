@@ -7,17 +7,14 @@
 
 <div>
     Heap 1
-    @heaps[0]
     <Heap Name="1" @bind-Size="heaps[0]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
 </div>
 <div>
     Heap 2
-    @heaps[1]
     <Heap Name="2" @bind-Size="heaps[1]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
 </div>
 <div>
     Heap 3
-    @heaps[2]
     <Heap Name="3" @bind-Size="heaps[2]" state="gameState" OnPlayerMoved="playerMoved"></Heap>
 </div>
 <div>
@@ -142,7 +139,7 @@
             move = new Move(randomHeap, randomNumber);
         }
         heaps[move.Heap] -= move.Number;
-        log($"Computer removed {move.Number} from heap {move.Heap}.");
+        log($"Computer removed {move.Number} from heap {move.Heap + 1}.");
 
         if(GetHeapsInPlay().Count() == 0)
         {
